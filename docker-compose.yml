@@ -1,0 +1,18 @@
+version: "3.1"
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "admin"
+      POSTGRES_DB: "files"
+    volumes:
+      - ./sql/files.sql:/dicker-entrypoint-initdb.d/files.sql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
