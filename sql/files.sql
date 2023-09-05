@@ -1,7 +1,7 @@
 CREATE TABLES files (
     name SERIAL PRIMARY KEY,
-    size FLOAT NOT NULL,
-    key NUMERIC NOT NULL,
+    size NUMERIC NOT NULL,
+    key INTEGER NOT NULL,
     url VARCHAR(255) NOT NULL,
     createdAt DATE,
 )
