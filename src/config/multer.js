@@ -6,11 +6,8 @@ const crypto = require("crypto");
 module.exports = {
   dest: path.resolve(__dirname, "..", "..", "tmp", "uploads"),
   storage: multer.diskStorage({
-    destination: (req, res, cb) => {
-      cb(
-        new ErrorFile("Caminho do arquivo inexistente"),
-        path.resolve(__dirname, "..", "..", "tmp", "uploads")
-      );
+    destination: (req, file, cb) => {
+      cb(null, path.resolve(__dirname, "..", "..", "tmp", "uploads"));
     },
     filename: (req, file, cb) => {
       crypto.randomBytes(16, (err, hash) => {

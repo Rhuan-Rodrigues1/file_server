@@ -1,18 +1,12 @@
-version: "3.1"
+version: "3.2"
 
 services:
-  db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_USER: "user"
-      POSTGRES_PASSWORD: "admin"
-      POSTGRES_DB: "files"
-    volumes:
-      - ./sql/files.sql:/dicker-entrypoint-initdb.d/files.sql
-
-  adminer:
-    image: adminer
-    restart: always
+  mongo:
+    image: "mongo:latest"
     ports:
-      - 8080:8080
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+
+volumes:
+  mongodb_data_container:

@@ -1,24 +1,15 @@
-const { Pool } = require("pg");
+const mongoose = require("mongoose");
 const { config } = require("dotenv");
 
 config();
 
-const pool = new Pool({
-  user: process.env.USER,
-  database: process.env.DB,
-  password: process.env.PASSWORD,
-  port: 5432,
+mongoose.set("useFindAndModify", false);
+
+mongoose.connect(process.env.URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-pool
-  .on("connect", () => {
-    console.log("Banco de dados conectado !!");
-  })
-  .then((result) => {
-    console.log(result);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+mongoose.Promise = global.Promise;
 
-module.exports = { query: (text, params) => pool.query(text, params) };
+module.exports = mongoose;
