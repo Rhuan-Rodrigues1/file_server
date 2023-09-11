@@ -1,3 +1,4 @@
+const path = require("path");
 const fs = require("fs");
 
 const mimeTypes = {
@@ -39,5 +40,11 @@ module.exports = {
 
       res.end("<h1>List of files:</h1> " + filesLink);
     }
+
+    const normalizedPath = path.normalize(
+      parseUrl.pathname.replace(/^(\.\.[\/\\])+/, "")
+    );
+
+    let pathname = path.join(__dirname, normalizedPath);
   },
 };
