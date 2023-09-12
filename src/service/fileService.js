@@ -46,7 +46,7 @@ module.exports = {
       parseUrl.pathname.replace(/^(\.\.[\/\\])+/, "")
     );
 
-    let pathname = path.join(__dirname, "../", normalizedPath);
+    let pathname = path.join(__dirname, "../", "../", normalizedPath);
 
     if (!fs.existsSync(pathname)) {
       res.statusCode = 404;
