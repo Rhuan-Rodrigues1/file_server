@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const url = require("url");
 
 const mimeTypes = {
   ".ico": "image/x-icon",
@@ -20,16 +21,16 @@ const mimeTypes = {
 
 module.exports = {
   fileService: (req, res) => {
-    const parseUrl = new URL(req.url);
+    const parseUrl = url.parse(req.url);
 
     if (parseUrl.pathname === "/") {
       var filesLink = "<ul>";
 
       res.setHeader("Content-type", "text/html");
-      var fileList = fs.readdirSync("../");
+      var fileList = fs.readdirSync(".");
 
       fileList.forEach((element) => {
-        if (fs.statSync("../" + element).isFile()) {
+        if (fs.statSync("./" + element).isFile()) {
           filesLink += `<br/><li><a href='./${element}'>
             ${element}
         </a></li>`;
@@ -45,6 +46,24 @@ module.exports = {
       parseUrl.pathname.replace(/^(\.\.[\/\\])+/, "")
     );
 
-    let pathname = path.join(__dirname, normalizedPath);
+    let pathname = path.join(__dirname, "../", normalizedPath);
+
+    if (!fs.existsSync(pathname)) {
+      res.statusCode = 404;
+      res.end(`File ${pathname} not found!`);
+    } else {
+      fs.readFile(pathname, (err, data) => {
+        if (err) {
+          res.statusCode = 500;
+          res.end(`Error in getting the file.`);
+        } else {
+          const ext = path.parse(pathname).ext;
+
+          res.setHeader("Content-type", mimeTypes[ext] || "text/plain");
+
+          res.end(data);
+        }
+      });
+    }
   },
 };
